@@ -4,8 +4,6 @@
 #   어플 내 러닝 버튼 클릭시 지정된 파일 내부에 있는 이미지들로 학습
 #   어플로 이미지를 넣고 예측 버튼 클릭시 러닝된 값으로 이미지 해상도가 증가된 값 출력
 
-#import keras
-# from keras.datasets import mnist
 from keras.models import Sequential
 from keras.layers import Conv2D, Conv2DTranspose
 import matplotlib.pyplot as plt
@@ -37,17 +35,6 @@ class Zoom():
     def buildModel(self):
         model = Sequential()
 
-        """
-        model.add(Conv2D(32, kernel_size=(3, 3), activation='relu', kernel_initializer='he_normal', input_shape=(self.originalSize, self.originalSize, 3)))
-        model.add(Conv2D(16, kernel_size=(3, 3), activation='relu', kernel_initializer='he_normal'))
-        model.add(Conv2D(8, kernel_size=(3, 3), activation='relu', kernel_initializer='he_normal'))
-
-        model.add(Conv2DTranspose(8, kernel_size=(3, 3), activation='relu', kernel_initializer='he_normal', input_shape=(self.resizeSize, self.resizeSize, 3)))
-        model.add(Conv2DTranspose(16, kernel_size=(3, 3), activation='relu', kernel_initializer='he_normal'))
-        model.add(Conv2DTranspose(32, kernel_size=(3, 3), activation='relu', kernel_initializer='he_normal'))
-
-        model.add(Conv2D(3, kernel_size=(3, 3), activation='sigmoid', padding='same'))
-        """
         model.add(Conv2DTranspose(2, kernel_size=(25, 25), activation='relu', kernel_initializer='he_normal', input_shape=(100, 100, 3)))
         model.add(Conv2DTranspose(4, kernel_size=(25, 25), activation='relu', kernel_initializer='he_normal'))
         model.add(Conv2DTranspose(8, kernel_size=(25, 25), activation='relu', kernel_initializer='he_normal'))
@@ -89,19 +76,6 @@ class Zoom():
 
 
     def train(self, epochs, batchSize, validationSplit):
-        """
-        # load dataset and normalize
-        (input_train, target_train), (input_test, target_test) = mnist.load_data()
-
-        input_train = input_train.reshape(input_train.shape[0], self.imgWidth, self.imgHeight, 1)
-        input_test = input_test.reshape(input_test.shape[0], self.imgWidth, self.imgHeight, 1)
-
-        input_train = np.array(input_train.astype('float32'))
-        input_test = np.array(input_test.astype('float32'))
-
-        input_train = input_train / 255
-        input_test = input_test / 255
-        """
         input_train = self.imageRead(self.splitResizeDir, self.resizeSize)
         target_test = self.imageRead(self.splitPicDir, self.originalSize)
 
