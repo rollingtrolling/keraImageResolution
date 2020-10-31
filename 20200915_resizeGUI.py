@@ -206,8 +206,3 @@ if __name__ == '__main__':
 # 용량 때문에 3000개만 변환 완료됨, npy 읽는 구조로 바꾸고 시간 비교
 # > 실제 읽는 시간은 별로 차이 없더라 아마 시간이 걸리는 건 읽을 때가 아니라 읽고 배열로 concatenate할때 인듯
 # > 따라서 fit_generator로 그때그떄 읽어서 학습하면 concatenate 시간이 줄어드니 npy로 변환 안해도 시간 단축 될 것
-
-# fit_generator
-# https://www.pyimagesearch.com/2018/12/24/how-to-use-keras-fit-and-fit_generator-a-hands-on-tutorial/
-# http://www.kwangsiklee.com/2018/11/keras%EC%97%90%EC%84%9C-sequence%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%98%EC%97%AC-%EB%8C%80%EC%9A%A9%EB%9F%89-%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%85%8B-%EC%B2%98%EB%A6%AC%ED%95%98%EA%B8%B0/
-# https://leestation.tistory.com/776
