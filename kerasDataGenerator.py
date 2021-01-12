@@ -4,7 +4,9 @@ from PIL import Image as pil
 
 
 class DataGenerator(Sequence):
-    def __init__(self, ID, batch_size, imgSize, shuffle=True):
+    def __init__(self, trainURL, targetURL, ID, batch_size, imgSize, shuffle=True):
+        self.trainURL = trainURL
+        self.targetURL = targetURL
         self.ID = ID
         self.imgSize = imgSize
         self.batch_size = batch_size
@@ -25,11 +27,11 @@ class DataGenerator(Sequence):
         y = np.empty((self.batch_size, self.imgSize, self.imgSize, 3))
 
         for i, ID in enumerate(list_IDs_temp):
-            train = pil.open("E:/sourceImage/splitPictureResize/" + ID) #***
+            train = pil.open(self.trainURL + ID)
             train = train.resize((self.imgSize, self.imgSize))
             x[i,] = np.asarray(train).reshape((self.imgSize, self.imgSize, 3))
 
-            target = pil.open("E:/sourceImage/splitPicture/"+ID)
+            target = pil.open(self.targetURL + ID)
             y[i,] = np.asarray(target).reshape((self.imgSize, self.imgSize, 3))
 
         return x/255, y/255
