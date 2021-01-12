@@ -15,8 +15,8 @@ class Zoom():
         self.resizeSize = 100
         self.originalSize = 200
 
-        self.splitPicDir = "E:\sourceImage\splitPicture\\"
-        self.splitResizeDir = "E:\sourceImage\splitPictureResize\\"
+        self.splitPicDir = "E:\sourceImage\splitPictureVer2\\"
+        self.splitResizeDir = "E:\sourceImage\splitPictureResizeVer2\\"
 
         self.zoomModel = self.buildModel()
 
@@ -40,9 +40,9 @@ class Zoom():
         return model
 
 
-    def train(self, epochs, batchSize, stepsPerEpoch):
+        def train(self, epochs, batchSize, stepsPerEpoch):
         trainIDs = os.listdir(self.splitResizeDir)#***경로 수정
-        customGen = DataGenerator(trainIDs, batchSize, self.originalSize)
+        customGen = DataGenerator(self.splitResizeDir, self.splitPicDir, trainIDs, batchSize, self.originalSize)
 
         #self.zoomModel.compile(optimizer='Adam', loss='mean_squared_error', metrics=['accuracy'])
         #self.zoomModel.compile(optimizer='Adam', loss='mean_absolute_error', metrics=['accuracy'])
@@ -58,29 +58,6 @@ class Zoom():
         return result
 
 
-    def visualize(self, testImageNum, testSplitNum):
-        testImage = pil.open(self.splitResizeDir+'img-'+str(testImageNum).zfill(5)+'-'+str(testSplitNum).zfill(5)+'.jpg')#*** 경로 수정
-        testImage = testImage.resize((self.originalSize, self.originalSize))
-        testImage = np.asarray(testImage).reshape((1, self.originalSize, self.originalSize, 3))
-
-        reconstruction = self.zoomModel.predict(testImage / 255)
-        reconstruction = reconstruction * 255
-        original = pil.open(self.splitPicDir+'img-'+str(testImageNum).zfill(5)+'-'+str(testSplitNum).zfill(5)+'.jpg')#*** 경로 수정
-
-        testImage = testImage.reshape((self.originalSize, self.originalSize, 3))
-        reconstruction = reconstruction.reshape((self.originalSize, self.originalSize, 3))
-
-        fig, axes = plt.subplots(1, 3)
-        axes[0].imshow(testImage.astype(np.uint8))
-        axes[0].set_title('input image')
-        axes[1].imshow(reconstruction.astype(np.uint8))
-        axes[1].set_title('reconstructed image')
-        axes[2].imshow(original)
-        axes[2].set_title('original image')
-
-        plt.show()
-
-
     # 이미지(numpy array)를 학습된 모델에 넣어 결과값(numpy array) 리턴
     def modelPredict(self, image):
         predictedImage = self.zoomModel.predict(image)
@@ -90,7 +67,7 @@ class Zoom():
 
 
     def modelSave(self):
-        self.zoomModel.save('zoomModel.h5')
+        self.zoomModel.save('zoomModel2.h5')
 
 
 if __name__ == '__main__':
@@ -98,11 +75,7 @@ if __name__ == '__main__':
     result = zoom.train(epochs=500, batchSize=10, stepsPerEpoch=10)
 
     zoom.modelSave()
-    zoom.visualize(0, 11)
 
-    """
-    # 모델 학습 확인용이므로 학습이 잘 되면 주석부분 삭제+visualize method 주석화
-    # predict method만 남겨둔다
     fig, loss_ax = plt.subplots()
     acc_ax = loss_ax.twinx()
 
@@ -116,4 +89,3 @@ if __name__ == '__main__':
     acc_ax.legend(loc='lower left')
 
     plt.show()
-    """
