@@ -40,7 +40,7 @@ class Zoom():
         return model
 
 
-        def train(self, epochs, batchSize, stepsPerEpoch):
+    def train(self, epochs, batchSize, stepsPerEpoch):
         trainIDs = os.listdir(self.splitResizeDir)#***경로 수정
         customGen = DataGenerator(self.splitResizeDir, self.splitPicDir, trainIDs, batchSize, self.originalSize)
 
